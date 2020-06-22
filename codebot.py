@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'codebot.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
-#
+# 
 # WARNING! All changes made in this file will be lost!
 
 import bs4 as bs
@@ -93,6 +93,7 @@ class Ui_Codechef(object):
         self.lineEdit.setPlaceholderText(_translate("Codechef", "Codechef Username...."))
         self.label.setText(_translate("Codechef", "Codechef Bot"))
 
+# Main Code start
 
 def wrapper():
         q = ui.lineEdit.text()
@@ -100,15 +101,20 @@ def wrapper():
             ui.lineEdit.setPlaceholderText( "Codechef Username....")
         else:
             try:
-                from selenium import webdriver
-                from selenium.webdriver.chrome.options import Options
+                from selenium import webdriver                                        # Importing selenium testing library
+                from selenium.webdriver.chrome.options import Options                 # Importing options 
+                # Creating Option object
                 options = Options()
+                # Making all calls with headless browser
                 options.add_argument("--headless")
                 browser = webdriver.Chrome(options=options)
+                # Fetching HTML DOM for the given URL
                 browser.get("https://www.codechef.com/users/" + q)
+                # Calling BeautifulSoup Object for the given source page. 
+                # BeautifulSoup('HTML/XML DOM page_course', 'option fo the same')
                 soup = bs.BeautifulSoup(browser.page_source, 'html.parser')
-                table = soup.find('table', class_='dataTable')
-                rows = table.findAll('tr')
+                table = soup.find('table', class_='dataTable')                       # Finding table tag as all the information is present in table.
+                rows = table.findAll('tr')                                           # Inside table finding all the rows.
                 data = ['|'.join([td.findNext(text=True) for td in tr.findAll("td")]) for tr in rows]
                 s = ''
                 row = 0
@@ -117,7 +123,7 @@ def wrapper():
                     if (len(x) == 4):
                         col = 0
                         for str in x:
-                            ui.tableWidget.setItem(row, col, QTableWidgetItem(str))
+                            ui.tableWidget.setItem(row, col, QTableWidgetItem(str))  # Connecting data object to the GUI. 
                             col += 1
                         row += 1
 
